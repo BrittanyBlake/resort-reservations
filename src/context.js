@@ -1,17 +1,20 @@
-import React, {createContext} from 'react'
+import React, {createContext, useState} from 'react'
 
 const RoomContext = createContext()
 
  const RoomProvider = (props) => {
 
-    const initialState = {
+     const initialState = {
+         greeting: 'hello',
+         name: 'Brittany'
+     }
 
-    }
+    const [values] = useState(initialState)
     return (
-        <RoomContext.Provider value={'hello'}>
-            {props.children}
-        </RoomContext.Provider>
-    )
+      <RoomContext.Provider value={{...values}}>
+        {props.children}
+      </RoomContext.Provider>
+    );
 }
 
 const RoomConsumer = RoomContext.Consumer
