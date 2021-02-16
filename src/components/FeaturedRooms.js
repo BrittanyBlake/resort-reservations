@@ -3,11 +3,11 @@ import {RoomContext} from '../context'
 
  const FeaturedRooms = () => {
 
-  const value = useContext(RoomContext);
-  console.log(value)
+  const {name, greeting} = useContext(RoomContext);
+  console.log(greeting)
     return (
       <div>
-        <p> hello from featured rooms</p>
+        <p> {greeting} {name} from featured rooms</p>
       </div>
     );
 }
