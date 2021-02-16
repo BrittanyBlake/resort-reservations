@@ -1,43 +1,45 @@
-import React, {createContext, useState, useEffect} from 'react';
-import items from './data';
+import React, { createContext, useState, useEffect } from "react";
+import items from "./data";
 
-const RoomContext = createContext()
+const RoomContext = createContext();
 
- const RoomProvider = (props) => {
+const RoomProvider = (props) => {
+  const initialState = {
+    rooms: [],
+    sortedRooms: [],
+    featuredRooms: [],
+    loading: true,
+  };
 
-     const initialState = {
-         rooms:[],
-         sortedRooms:[],
-         featuredRooms: [],
-         loading: true,
-     }
+  const [values, setValues] = useState(initialState);
 
-    const [values] = useState(initialState)
+  const formatData = (items) => {
+    const tempItems = items.map((item) => {
+      const id = item.sys.id;
+      const images = item.fields.images.map((image) => image.fields.file.url);
+      const room = { ...item.fields, images, id };
+      return room;
+    });
+    return tempItems;
+  };
 
-    const formatData = (items)=> {
-        const tempItems = items.map( item => {
-            const id = item.sys.id;
-            const images = item.fields.images.map(image => image.fields.file.url)
-            const room = {...item.fields, images, id}
-            return room
+  useEffect(() => {
+    const rooms = formatData(items);
+    const featuredRooms = rooms.filter((room) => room.featured === true);
+    setValues({
+      rooms,
+      featuredRooms,
+      sortedRooms: rooms,
+      loading: false,
+    });
+  }, []);
 
-        })
-        return tempItems
+  return (
+    <RoomContext.Provider value={{ ...values }}>
+      {props.children}
+    </RoomContext.Provider>
+  );
+};
 
-    }
-
-    useEffect (() => {
-        const rooms = formatData(items)
-        console.log(rooms)
-    })
-
-
-    return (
-      <RoomContext.Provider value={{...values}}>
-        {props.children}
-      </RoomContext.Provider>
-    );
-}
-
-const RoomConsumer = RoomContext.Consumer
-export {RoomProvider, RoomConsumer, RoomContext}
+const RoomConsumer = RoomContext.Consumer;
+export { RoomProvider, RoomConsumer, RoomContext };
