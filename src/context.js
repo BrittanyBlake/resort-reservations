@@ -1,12 +1,15 @@
-import React, {createContext, useState} from 'react'
+import React, {createContext, useState} from 'react';
+import items from './data';
 
 const RoomContext = createContext()
 
  const RoomProvider = (props) => {
 
      const initialState = {
-         greeting: 'hello',
-         name: 'Brittany'
+         rooms:[],
+         sortedRooms:[],
+         featuredRooms: [],
+         loading: true,
      }
 
     const [values] = useState(initialState)
